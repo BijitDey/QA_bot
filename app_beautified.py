@@ -46,35 +46,36 @@ def main():
     col1.header("Upload your File ")
     col2.header("Ask your File 💬")
 
-    file = col1.file_uploader("Supports PDF, MP3, WAV, MP4", accept_multiple_files = True) #, type=["pdf,mp3,mpeg"])
+    files = col1.file_uploader("Supports PDF, MP3, WAV, MP4", accept_multiple_files = True) #, type=["pdf,mp3,mpeg"])
 
-    if file is not None:
-        if col1.button(f"Upload"):
-            file_details = {"FileName": file.name, "FileType": file.type}
-            # st.write(file_details)
+    for file in files: 
+        if file is not None:
+            if col1.button(f"Upload"):
+                file_details = {"FileName": file.name, "FileType": file.type}
+                # st.write(file_details)
 
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                temp_file.write(file.read())
-                file_path = temp_file.name
+                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                    temp_file.write(file.read())
+                    file_path = temp_file.name
 
-            # st.write("File Path:", file_path)
+                # st.write("File Path:", file_path)
 
-            progress_text = col1.empty()
-            progress_text.text("File is being uploaded...")
-            db.dbfs.put(path=f"dbfs:/FileStore/data/{file.name}",
-                        src_path=file_path,
-                        overwrite=True)
-            progress_text.text("File is being indexed...")
-            os.remove(file_path)
-            progress_text.empty()
-            prog_text = col1.empty()
-            # progress_text.text("Indexing in progress...")
-            # print(file.type)
-            if file.type!="application/pdf":
-                for _ in range(30): 
-                    time.sleep(0.5) 
-                    progress_text.text("Indexing in progress" + "." * (_ % 4))
-            prog_text.text(f"{file.name} \n Indexed Successfully")
+                progress_text = col1.empty()
+                progress_text.text("File is being uploaded...")
+                db.dbfs.put(path=f"dbfs:/FileStore/data/{file.name}",
+                            src_path=file_path,
+                            overwrite=True)
+                progress_text.text("File is being indexed...")
+                os.remove(file_path)
+                progress_text.empty()
+                prog_text = col1.empty()
+                # progress_text.text("Indexing in progress...")
+                # print(file.type)
+                if file.type!="application/pdf":
+                    for _ in range(30): 
+                        time.sleep(0.5) 
+                        progress_text.text("Indexing in progress" + "." * (_ % 4))
+                prog_text.text(f"{file.name} \n Indexed Successfully")
 
     user_question = col2.text_input("Ask a question based on the content of your file:")
     # if col2.button(f"Submit_{hash('query')}"):
