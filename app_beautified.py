@@ -46,7 +46,7 @@ def main():
     col1.header("Upload your File ")
     col2.header("Ask your File 💬")
 
-    file = col1.file_uploader("Supports PDF, MP3, WAV, MP4") #, type=["pdf,mp3,mpeg"])
+    file = col1.file_uploader("Supports PDF, MP3, WAV, MP4", accept_multiple_files = 'true') #, type=["pdf,mp3,mpeg"])
 
     if file is not None:
         if col1.button(f"Upload"):
