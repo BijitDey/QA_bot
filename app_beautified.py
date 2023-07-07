@@ -48,9 +48,9 @@ def main():
 
     files = col1.file_uploader("Supports PDF, MP3, WAV, MP4", accept_multiple_files = True) #, type=["pdf,mp3,mpeg"])
 
-    for file in files: 
-        if file is not None:
-            if col1.button(f"Upload"):
+    if files is not None:
+        if col1.button(f"Upload"):
+            for file in files:
                 file_details = {"FileName": file.name, "FileType": file.type}
                 # st.write(file_details)
 
