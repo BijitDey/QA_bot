@@ -63,7 +63,7 @@ def main():
                 progress_text = col1.empty()
                 progress_text.text("File is being uploaded...")
                 db.dbfs.put(path=f"dbfs:/FileStore/data/{file.name}",
-                            # src_path=file_path,
+                            src_path=file_path,
                             overwrite=True)
                 progress_text.text("File is being indexed...")
                 os.remove(file_path)
